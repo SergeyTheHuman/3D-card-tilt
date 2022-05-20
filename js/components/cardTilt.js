@@ -3,7 +3,7 @@ export function cardTilt(cardWrapper) {
 		throw new Error('Такого DOM-элемента не существует!')
 	}
 
-	const cardItem = cardWrapper.firstElementChild
+	const cardItem = cardWrapper.querySelector('.main')
 	const firstLayer = cardWrapper.querySelector('.first')
 	const secondLayer = cardWrapper.querySelector('.second')
 	const thirdLayer = cardWrapper.querySelector('.third')
@@ -13,6 +13,7 @@ export function cardTilt(cardWrapper) {
 
 	cardWrapper.addEventListener('mousemove', (e) => {
 		let clientRect = cardItem.getBoundingClientRect() // координаты элемента
+		
 		// получаем центр по карточки по высоте и по ширине
 		let coordX = e.pageX - clientRect.left - cardItem.offsetWidth / 2
 		let coordY = e.pageY - clientRect.top - cardItem.offsetHeight / 2
@@ -22,6 +23,7 @@ export function cardTilt(cardWrapper) {
 		let procentY = ((coordY / cardHeight) * 100 * coefficient).toFixed(2)
 
 		cardItem.style.cssText = `transform: rotateX(${-procentY}deg) rotateY(${procentX}deg)`
+
 		if (firstLayer) {
 			firstLayer.style.cssText = `
 				transform: 
@@ -47,12 +49,14 @@ export function cardTilt(cardWrapper) {
 		`
 		}
 	})
+
 	cardWrapper.addEventListener('mouseenter', (e) => {
 		if (firstLayer) firstLayer.classList.remove('no-active')
 		if (secondLayer) secondLayer.classList.remove('no-active')
 		if (thirdLayer) thirdLayer.classList.remove('no-active')
 		cardItem.classList.remove('no-active')
 	})
+	
 	cardWrapper.addEventListener('mouseleave', (e) => {
 		if (firstLayer) {
 			firstLayer.classList.add('no-active')
